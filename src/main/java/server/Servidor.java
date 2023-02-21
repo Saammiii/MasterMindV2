@@ -24,8 +24,6 @@ public class Servidor {
 
                 ServidorHilo hilo = new ServidorHilo(out);
                 hilo.start();
-
-                out.close();
             }
 
         } catch (IOException ex) {

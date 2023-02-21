@@ -1,15 +1,13 @@
 package client;
 
-import org.json.JSONObject;
+
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.SQLException;
-import java.util.Scanner;
+
 
 public class ClienteHilo extends Thread{
 
@@ -22,16 +20,18 @@ public class ClienteHilo extends Thread{
     @Override
     public void run() {
 
-        String s = null;
+        JSONParser parser = new JSONParser();
+        JSONObject jsonOpciones;
+        JSONObject jsonSolucion;
         try {
-            s = in.readUTF();
-        } catch (IOException e) {
+            jsonOpciones = (JSONObject) parser.parse(in.readUTF());
+            System.out.println(jsonOpciones);
+
+            jsonSolucion = (JSONObject) parser.parse(in.readUTF());
+            System.out.println(jsonSolucion);
+        } catch (IOException | ParseException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(s);
-            /*JSONObject jsonOpciones = parsearStringToJSON();
-            System.out.println(jsonOpciones.toString());*/
-
 
     }
 
