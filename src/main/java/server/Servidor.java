@@ -1,9 +1,6 @@
 package server;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -22,8 +19,7 @@ public class Servidor {
 
                 System.out.println("\t-Número de hilos ACTIVOS: " + Thread.activeCount());
 
-                ObjectInputStream in = new ObjectInputStream(sc.getInputStream());
-                PrintWriter out = new PrintWriter(sc.getOutputStream());
+                DataOutputStream out = new DataOutputStream(sc.getOutputStream());
 
 
                 ServidorHilo hilo = new ServidorHilo(out);

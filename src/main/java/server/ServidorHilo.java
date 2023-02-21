@@ -3,16 +3,18 @@ package server;
 
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class ServidorHilo extends Thread{
 
-    private PrintWriter out;
+    private DataOutputStream out;
     private final ArrayList<String> colores = new ArrayList<>();
 
 
-    public ServidorHilo(PrintWriter out) {
+    public ServidorHilo(DataOutputStream out) {
         this.out = out;
     }
 
@@ -21,7 +23,11 @@ public class ServidorHilo extends Thread{
 
         String s2 = "buenas tardes";
         System.out.println(s2);
-        out.write(s2);
+        try {
+            out.writeUTF(s2);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         /*System.out.println(colores);
         JSONObject coloresOpciones = crearJSONObject(this.colores);
         out.write(coloresOpciones.toString());*/

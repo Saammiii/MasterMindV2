@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -12,16 +13,21 @@ import java.util.Scanner;
 
 public class ClienteHilo extends Thread{
 
-    private Scanner in;
+    private DataInputStream in;
 
-    public ClienteHilo(Scanner in) {
+    public ClienteHilo(DataInputStream in) {
         this.in = in;
     }
 
     @Override
     public void run() {
 
-        String s = in.next();
+        String s = null;
+        try {
+            s = in.readUTF();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println(s);
             /*JSONObject jsonOpciones = parsearStringToJSON();
             System.out.println(jsonOpciones.toString());*/
@@ -29,8 +35,8 @@ public class ClienteHilo extends Thread{
 
     }
 
-    private JSONObject parsearStringToJSON() throws ParseException, InterruptedException {
-        String jsonString = in.next();
+    private JSONObject parsearStringToJSON() throws ParseException, InterruptedException, IOException {
+        String jsonString = in.readUTF();
         System.out.println(jsonString);
         JSONParser parser = new JSONParser();
         return (JSONObject) parser.parse(jsonString);
