@@ -1,9 +1,6 @@
 package client;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -17,8 +14,9 @@ public class Cliente {
             Socket sc = new Socket("127.0.0.1", 4567);
 
             DataInputStream in = new DataInputStream(sc.getInputStream());
+            DataOutputStream out = new DataOutputStream(sc.getOutputStream());
 
-            ClienteHilo hilo = new ClienteHilo(in);
+            ClienteHilo hilo = new ClienteHilo(in, out);
             hilo.start();
             hilo.join();
 

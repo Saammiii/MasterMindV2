@@ -16,13 +16,13 @@ public class Servidor {
 
                 sc = server.accept();
                 System.out.println("*Nuevo cliente aceptado*");
-
                 System.out.println("\t-Número de hilos ACTIVOS: " + Thread.activeCount());
 
+                DataInputStream in = new DataInputStream(sc.getInputStream());
                 DataOutputStream out = new DataOutputStream(sc.getOutputStream());
 
 
-                ServidorHilo hilo = new ServidorHilo(out);
+                ServidorHilo hilo = new ServidorHilo(out, in);
                 hilo.start();
             }
 

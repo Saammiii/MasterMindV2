@@ -1,44 +1,46 @@
 package client;
 
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.google.gson.Gson;
+import com.mysql.cj.xdevapi.JsonParser;
+import org.json.JSONObject;
+
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.sql.SQLException;
 
 
 public class ClienteHilo extends Thread{
 
     private DataInputStream in;
+    private DataOutputStream out;
 
-    public ClienteHilo(DataInputStream in) {
+    public ClienteHilo(DataInputStream in, DataOutputStream out) {
         this.in = in;
+        this.out = out;
     }
 
     @Override
     public void run() {
 
-        JSONParser parser = new JSONParser();
+        String s1, s2;
+
         JSONObject jsonOpciones;
         JSONObject jsonSolucion;
         try {
-            jsonOpciones = (JSONObject) parser.parse(in.readUTF());
-            System.out.println(jsonOpciones);
+            s1 =  in.readUTF();
+            jsonOpciones = new JSONObject(s1);
 
-            jsonSolucion = (JSONObject) parser.parse(in.readUTF());
-            System.out.println(jsonSolucion);
-        } catch (IOException | ParseException e) {
+            s2 =  in.readUTF();
+            jsonSolucion = new JSONObject(s2);
+
+            VistaJuego mastermind = new VistaJuego(jsonOpciones, jsonSolucion);
+
+        } catch (IOException | SQLException e) {
             throw new RuntimeException(e);
         }
-
-    }
-
-    private JSONObject parsearStringToJSON() throws ParseException, InterruptedException, IOException {
-        String jsonString = in.readUTF();
-        System.out.println(jsonString);
-        JSONParser parser = new JSONParser();
-        return (JSONObject) parser.parse(jsonString);
     }
 }

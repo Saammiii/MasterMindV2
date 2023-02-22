@@ -1,20 +1,24 @@
 package server;
 
 
+
 import org.json.JSONObject;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.util.ArrayList;
 
 public class ServidorHilo extends Thread{
 
+    private DataInputStream in;
     private DataOutputStream out;
     private final ArrayList<String> colores = new ArrayList<>();
 
 
-    public ServidorHilo(DataOutputStream out) {
+    public ServidorHilo(DataOutputStream out, DataInputStream in) {
+        this.in = in;
         this.out = out;
     }
 
@@ -25,15 +29,12 @@ public class ServidorHilo extends Thread{
         JSONObject coloresSolucion;
         try {
             rellenarArrayColores();
+
             coloresOpciones = crearJSONObject(colores);
             out.writeUTF(coloresOpciones.toString());
-            System.out.println(coloresOpciones);
 
             coloresSolucion = setSolucion();
             out.writeUTF(coloresSolucion.toString());
-            System.out.println(coloresSolucion);
-
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);
